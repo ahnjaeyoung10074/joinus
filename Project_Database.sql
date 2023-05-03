@@ -8,56 +8,59 @@ drop table review;
 drop table customer_buy_list;
 drop table business_sell_list;
 
--- 고객 정보 테이블
+-- 고객 정보 테이블 // u로 구분
 create table customers_table(
-    id number not null primary key, -- 사용자를 구분할 고유ID
-    userID varchar2(100) unique not null,
-    password varchar2(100) not null,
-    email varchar2(100) not null,
-    phoneNumber varchar2(100) not null,
-    address varchar2(100), -- 주소는 어떻게할까
+    uno number not null primary key, -- 사용자를 구분할 고유ID
+    u_id varchar2(100) unique not null,
+    u_name varchar2(100),
+    u_pwd varchar2(100) not null,
+    u_email varchar2(100) not null,
+    u_phone varchar2(100) not null,
+    u_address varchar2(100), -- 주소는 어떻게할까
     buyPoint number, -- 예비용
     auth char default 'A', -- 임시로 권한넣음
     payPoint number -- 포인트?
 );
 
--- 사업자 정보 테이블
+-- 사업자 정보 테이블 // b로 구분
 create table business_table(
-    id number not null primary key, -- 사용자를 구분할 고유ID
-    userID varchar2(100) unique not null,
-    password varchar2(100) not null,
-    email varchar2(100) not null,
-    phoneNumber varchar2(100) not null,
-    address varchar2(100), -- 주소는 어떻게할까
+    bno number not null primary key, -- 사용자를 구분할 고유ID
+    b_id varchar2(100) unique not null,
+    b_pwd varchar2(100) not null,
+    b_email varchar2(100) not null,
+    b_phone varchar2(100) not null,
+    b_address varchar2(100), -- 주소는 어떻게할까
     auth char default 'A' -- 임시로 권한넣음
 );
 
--- 가게 정보 테이블(사업자 ID와 연결)
-create table store_table(
+-- 가게 정보 테이블(사업자 ID와 연결) // s로 구분
+create table store_table( 
     id number, -- 사용자 고유ID로 사업자와 가게 연결
     storeID number not null primary key,-- 가게를 구분할 고유ID
     storeName varchar2(100) not null,
     storeAddress varchar2(100) not null,
     storeURL varchar2(100), -- 있는 사람들만?
-    storeImages varchar2(100), -- 이미지가 있는 주소
+    storeImages varchar2(100), -- 이미지가 있는 주소 (가게 소개 이미지?)
     foreign key (id) references business_table(id)
     -- 여기에 가게에 대한 내용을 넣을지 생각 중
     -- 이미지는 "이미지주소1, 이미지주소2, ... 으로 저장해서 불러올때 ","기준으로 분해할지 고민 중
 );
 
--- 상품 정보 테이블(가게 ID와 연결)
+-- 상품 정보 테이블(가게 ID와 연결) // p로 구분
 create table products_table(
     storeID number, -- 가게 고유ID로 가게와 제품 연결
-    productID number not null primary key,
-    title varchar2(100) not null, -- 상품 이름?
-    subtitle varchar2(100) not null, -- 상품 소개글
-    content varchar2(200) not null, -- 상품 상세설명
-    images varchar2(100), -- 이미지가 있는 주소
-    peroid varchar2(100), -- 기간(저장방법은 아직 미정)
-    category varchar2(100), -- 카테고리
+    pno number not null primary key,
+    p_name varchar2(100) not null, -- 상품 이름?
+    p_subtitle varchar2(100) not null, -- 상품 소개글
+    p_content varchar2(200) not null, -- 상품 상세설명
+    p_images varchar2(100), -- 이미지가 있는 주소
+    p_peroid varchar2(100), -- 기간(저장방법은 아직 미정)
+    p_category varchar2(100), -- 카테고리
     foreign key (storeID) references store_table(storeID)
     -- 이미지는 "이미지주소1, 이미지주소2, ... 으로 저장해서 불러올때 ","기준으로 분해할지 고민 중
 );
+
+-------------------------------------- 05/03 위에 네개테이블만 적용 아래는 기능 추가하면서 -----------------------------
 
 -- 찜목록과 장바구니는 똑같이 구성함
 -- 찜목록 테이블(고객 ID와 상품 ID로 연결)
