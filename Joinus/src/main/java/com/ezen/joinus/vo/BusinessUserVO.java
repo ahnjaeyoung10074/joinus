@@ -1,7 +1,6 @@
 package com.ezen.joinus.vo;
 
 import lombok.*;
-import oracle.sql.CHAR;
 
 @AllArgsConstructor
 @NoArgsConstructor

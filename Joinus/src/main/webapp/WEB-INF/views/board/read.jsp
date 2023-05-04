@@ -41,237 +41,131 @@
   <link href="../../../resources/css/responsive.css" rel="stylesheet" />
 </head>
 <style>
-  /* slider__wrap */
-  .slider__wrap {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: 150px;
-    box-shadow: 0 50px 100px rgba(0, 0, 0, 0.4);
-  }
-  .slider__img {
-    position: relative;
-    width: 100%;
-    height: 100%;
+  .tab {
     overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
   }
-  .slider__img img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transform: scale(1.1);
-    transition: all 500ms ease-in-out;
-  }
-  .slider__img img.active {
-    opacity: 1;
-    transform: scale(1);
-  }
-  .slider__thumb {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, 140px);
-    width: 100px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  .slider__thumb img {
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
     cursor: pointer;
-    border: 2px solid transparent;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
   }
-  .slider__thumb img.active {
-    cursor: pointer;
-    border: 2px solid #fff;
+  .tab button:hover {
+    background-color: #ddd;
   }
-  .slider__btn a {
-    position: absolute;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 12px;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.2);
-    transition: all 300ms ease-in-out;
+  .tab button.active {
+    background-color: #ccc;
   }
-  .slider__btn a.next {
-    right: 0;
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
   }
-  .slider__btn a:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    font-size: 14px;
-  }
-
 </style>
 <%@ include file="../header.jsp"%>
 <body class="sub_page about_page">
 <table id="datatable-scroller"
        class="table table-bordered tbl_Form">
-  <caption></caption>
   <colgroup>
     <col width="250px" />
     <col />
   </colgroup>
   <tbody>
-  <tr>
-    <th class="active" >제목</th>
-    <td>
-      ${productVO.p_subtitle }
-    </td>
-  </tr>
-  <tr>
-    <th class="active">작성자</th>
-    <td>
-      ${productVO.p_name }
-    </td>
-  </tr>
-  <tr>
-    <th class="active" >내용</th>
-    <td>
-      ${productVO.p_content }
-    </td>
-  </tr>
-  </tbody>
-  <main id="main">
-    <div class="slider__wrap">
-      <div class="slider__img"></div>
-      <div class="slider__thumb"></div>
-      <div class="slider__btn">
-        <a href="#" class="prev" title="이전이미지">prev</a>
-        <a href="#" class="next" title="다음이미지">next</a>
-      </div>
-    </div>
-  </main>
-</table>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-<!-- info section -->
-<section class="info_section layout_padding2-top">
-  <div class="container">
-    <div class="info_form">
-      <h4>Our Newsletter</h4>
-      <form action="">
-        <input type="text" placeholder="Enter your email" />
-        <div class="d-flex justify-content-end">
-          <button>subscribe</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="container">
+  <div class="container mt-5">
     <div class="row">
-      <div class="col-md-3">
-        <h6>About Energym</h6>
-        <p>
-          consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-          labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-          nostrud exercitation u
-        </p>
-      </div>
-      <div class="col-md-2 offset-md-1">
-        <h6>Menus</h6>
-        <ul>
-          <li class="active">
-            <a class="" href="index.jsp"
-            >Home <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="">
-            <a class="" href="../about.jsp">About </a>
-          </li>
-          <li class="">
-            <a class="" href="service.jsp">Services </a>
-          </li>
-          <li class="">
-            <a class="" href="#contactSection">Contact Us</a>
-          </li>
-          <li class="">
-            <a class="" href="#">Login</a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-3">
-        <h6>Useful Links</h6>
-        <ul>
-          <li>
-            <a href=""> Adipiscing </a>
-          </li>
-          <li>
-            <a href=""> Elit, sed </a>
-          </li>
-          <li>
-            <a href=""> do Eiusmod </a>
-          </li>
-          <li>
-            <a href=""> Tempor </a>
-          </li>
-          <li>
-            <a href=""> incididunt </a>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-3">
-        <h6>Contact Us</h6>
-        <div class="info_link-box">
-          <a href="">
-            <img src="../../../resources/images/location-white.png" alt="" />
-            <span> No.123, loram ipusm</span>
+      <div class="col-md-6">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="../../resources/images/JOINUSLOGO3.png" class="d-block w-100" width="50%" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="../../resources/images/JOINUSLOGO3.png" class="d-block w-100" width="50%" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="../../resources/images/JOINUSLOGO3.png" class="d-block w-100" width="50%" alt="...">
+            </div>
+          </div>
+          <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
           </a>
-          <a href="">
-            <img src="../../../resources/images/call-white.png" alt="" />
-            <span>+01 12345678901</span>
-          </a>
-          <a href="">
-            <img src="../../../resources/images/mail-white.png" alt="" />
-            <span> demo123@gmail.com</span>
+          <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
           </a>
         </div>
-        <div class="info_social">
-          <div>
-            <a href="">
-              <img src="../../../resources/images/facebook-logo-button.png" alt="" />
-            </a>
-          </div>
-          <div>
-            <a href="">
-              <img src="../../../resources/images/twitter-logo-button.png" alt="" />
-            </a>
-          </div>
-          <div>
-            <a href="">
-              <img src="../../../resources/images/linkedin.png" alt="" />
-            </a>
-          </div>
-          <div>
-            <a href="">
-              <img src="../../../resources/images/instagram.png" alt="" />
-            </a>
-          </div>
-        </div>
       </div>
+
+      <div class="col-md-6">
+        <h4>${productVO.p_subtitle }</h4>
+        <p>${productVO.p_content}</p>
+        <form>
+          <div class="form-group">
+            <label for="colorSelect">종류</label>
+            <select class="form-control" id="colorSelect">
+              <option>${productVO.p_category}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sizeSelect">선택</label>
+            <select class="form-control" id="sizeSelect">
+              <option>${productVO.p_period}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="quantityInput">수량</label>
+            <input type="number" class="form-control" id="quantityInput" value="1" onchange="updateTotalPrice()">
+          </div>
+          <div class="form-group">
+            <label for="totalPrice">총 가격</label>
+            <input type="number" class="form-control" id="totalPrice" value="${productVO.p_price}" readonly>
+          </div>
+          <button type="button" class="btn btn-warning" onclick="addWishlist()">❤</button>
+          <button type="submit" class="btn btn-primary mr-2">장바구니</button>
+          <button type="submit" class="btn btn-success">구매하기</button>
+        </form>
+      </div>
+
+    </div>
+    <br>
+    <!-- 탭 버튼 -->
+    <div class="tab">
+      <button class="tablinks" onclick="openTab(event, 'product_info')">상품 상세 정보</button>
+      <button class="tablinks" onclick="openTab(event, 'reviews')">구매후기</button>
+      <button class="tablinks" onclick="openTab(event, 'qna')">상품문의</button>
+      <button class="tablinks" onclick="openTab(event, 'refund')">환불</button>
+    </div>
+    <!-- 탭 내용 -->
+    <div id="product_info" class="tabcontent">
+      <h3>상품 상세 정보</h3>
+      <p>상품의 상세 정보</p>
+    </div>
+
+    <div id="reviews" class="tabcontent">
+      <h3>구매후기</h3>
+      <p>구매후기</p>
+    </div>
+
+    <div id="qna" class="tabcontent">
+      <h3>상품문의</h3>
+      <p>상품문의 내용</p>
+    </div>
+
+    <div id="refund" class="tabcontent">
+      <h3>환불</h3>
+      <p>환불 규정 </p>
     </div>
   </div>
-</section>
-
-<!-- end info section -->
-
-<!-- footer section -->
-<section class="container-fluid footer_section">
-  <p>
-    &copy; 2019 All Rights Reserved. Design by
-    <a href="https://html.design/">Free Html Templates</a>
-  </p>
-</section>
-<!-- footer section -->
-
-<script type="text/javascript" src="../../../resources/js/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="../../../resources/js/bootstrap.js"></script>
+  </tbody>
+</table>
 
 <script>
   function openNav() {
@@ -281,92 +175,35 @@
             .classList.toggle("menu_btn-style");
   }
 </script>
+<!-- 탭 스크립트 -->
 <script>
-  let images = [
-    "img/sliderEffect06-min.jpg",
-    "img/sliderEffect07-min.jpg",
-    "img/sliderEffect08-min.jpg",
-    "img/sliderEffect09-min.jpg",
-    "img/sliderEffect10-min.jpg"
-  ]
+  function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+</script>
+<script>
+  function updateTotalPrice() {
+    const quantity = document.getElementById("quantityInput").value;
+    const price = ${productVO.p_price};
+    const totalPrice = quantity * price;
+    document.getElementById("totalPrice").value = totalPrice;
+  }
 
-  function imageSlider(parent, images){
-    let currentIndex = 0;
+  const addWishlist = () => {
+    // 찜하기 버튼 클릭 시 실행되는 함수
 
-    // 선택자
-    let slider = {
-      parent : parent,
-      images : parent.querySelector(".slider__img"),
-      thumnails : parent.querySelector(".slider__thumb"),
-      prevBtn : parent.querySelector(".slider__btn .prev"),
-      nextBtn : parent.querySelector(".slider__btn .next")
-    };
-
-    // 이미지 출력하기
-    slider.images.innerHTML = images.map((image, index) => {
-      return `<img src="${image}" alt="이미지${index}">`
-    }).join("");
-
-    // 이미지 활성화(active) 하기
-    let imageNodes = slider.images.querySelectorAll("img");
-    imageNodes[currentIndex].classList.add("active");
-
-    // 썸네일 이미지 출력하기
-    slider.thumnails.innerHTML = slider.images.innerHTML
-
-    // 썸네일 활성화(active) 하기
-    let thumnailNodes = slider.thumnails.querySelectorAll("img");
-    thumnailNodes[currentIndex].classList.add("active");
-
-    // 썸네일 이미지 클릭하기
-    thumnailNodes.forEach((e, i) => {
-      e.addEventListener("click", () => {
-        slider.thumnails.querySelector("img.active").classList.remove("active");
-        thumnailNodes[i].classList.add("active");
-
-        imageNodes[currentIndex].classList.remove("active");
-        currentIndex = i;
-        imageNodes[i].classList.add("active");
-      });
-    });
-
-
-    // 왼쪽 버튼 클릭
-    slider.prevBtn.addEventListener("click", () => {
-      // active 지우기
-      imageNodes[currentIndex].classList.remove("active");
-      thumnailNodes[currentIndex].classList.remove("active");
-
-      // 순서 설정
-      currentIndex--;
-      if(currentIndex < 0) currentIndex = images.length - 1;
-
-      // 이미지 active
-      imageNodes[currentIndex].classList.add("active");
-
-      // 썸네일 active
-      thumnailNodes[currentIndex].classList.add("active");
-
-    });
-
-    // 오른쪽 버튼 클릭
-    slider.nextBtn.addEventListener("click", () => {
-      // active 지우기
-      imageNodes[currentIndex].classList.remove("active");
-      thumnailNodes[currentIndex].classList.remove("active");
-
-      // 순서 설정
-      currentIndex = (currentIndex + 1) % images.length;
-
-      // 이미지 active
-      imageNodes[currentIndex].classList.add("active");
-
-      // 썸네일 active
-      thumnailNodes[currentIndex].classList.add("active");
-    });
-  };
-
-  imageSlider(document.querySelector(".slider__wrap"), images)
+  }
 </script>
 </body>
+<%@ include file="../footer.jsp"%>
 </html>

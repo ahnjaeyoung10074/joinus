@@ -1,87 +1,150 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%--stylesheet 안먹어서 header에 가져옴--%>
+<%--헤더 전체 바꾸기--%>
+<link
+        rel="stylesheet"
+        type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css"
+/>
+
+<!-- bootstrap core css -->
+<link rel="stylesheet" type="text/css" href="../../resources/css/bootstrap.css" />
+
+<!-- fonts style -->
+<link
+        href="https://fonts.googleapis.com/css?family=Baloo+Chettan|Dosis:400,600,700|Poppins:400,600,700&display=swap"
+        rel="stylesheet"
+/>
+<!-- Custom styles for this template -->
+<link href="../../resources/css/style.css" rel="stylesheet" />
+<!-- responsive style -->
+<link href="../../resources/css/responsive.css" rel="stylesheet" />
+<style>
+    <%--    폰트 추가    --%>
+    @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 100;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');}
+    @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 300;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 400;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 500;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 700;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 900;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf) format('opentype');}
+    body, table, div, p ,span{font-family:'Noto Sans KR';}
+    /*==================================================*/
+    .navbar-nav1 {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        position: relative;
+    }
+
+    .navbar-nav1 li {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 0.8em;
+        border-right: 1px solid #ccc;
+        padding-right: 10px;
+    }
+
+    #ul {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: calc(85% - 170px);
+    }
+    .nav-link1{
+        color: #3b3b3b;
+    }
+</style>
+
+
 <div>
     <!-- header section strats -->
-    <header class="header_section">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg custom_nav-container">
-                <a class="navbar-brand" href="about">
-                    <img src="../../resources/images/JOINUSLOGO3.png" alt="" />
-                </a>
-                <div class="contact_nav" id="">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="login">
-                                <img src="../../resources/images/location.png" alt="" />
-                                <span>로그인</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="signup">
-                                <img src="../../resources/images/call.png" alt="" />
-                                <span>회원가입</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="service.jsp">
-                                <img src="../../resources/images/envelope.png" alt="" />
-                                <span>커뮤니티</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+    <header class="header_section" style="background-color:white;" id="header">
+        <div class="container" >
+            <div class="contact_nav"  style="top: 5px; height: 10px;">
+                <ul class="navbar-nav1" id = "ul"  style="top: 5px; height: 20px;">
+                    <li class="nav-item1">
+                        <a class="nav-link1" href="/login" style="top: 5px; height: 10px;">
+                            로그인
+                        </a>
+                    </li>
+                    <li class="nav-item1">
+                        <a class="nav-link1" href="/join" style="top: 5px; height: 10px;">
+                            회원가입
+                        </a>
+                    </li>
+                    <li class="nav-item1">
+                        <a class="nav-link1" href="/service.jsp" style="top: 5px; height: 10px;">
+                            커뮤니티
+                        </a>
+                    </li>
+                    <li class="nav-item1">
+                        <a class="nav-link1" href="/service.jsp" style="top: 5px; height: 10px;">
+                            고객센터
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <%--            <nav class="navbar navbar-expand-lg custom_nav-container" style="color: white">--%>
+            <div class="logodiv">
+                <h1 class="logo">
+                    <a class="navbar-brand" href="/product_board">
+                        <img src="../../resources/images/JOINUSLOGO3.png" alt="" />
+                    </a>
+                </h1>
+            </div>
+
+
+            <%--            </nav>--%>
+
         </div>
     </header>
     <!-- end header section -->
     <!-- slider section -->
-        <div class="container">
-            <div class="custom_nav2">
-                <nav class="navbar navbar-expand-lg custom_nav-container">
-                    <button
-                            class="navbar-toggler"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                    >
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+    <div class="container">
+        <div class="custom_nav2">
+            <nav class="navbar navbar-expand-lg custom_nav-container">
+                <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <div class="d-flex flex-column flex-lg-row align-items-center">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="a"
-                                    >Home <span class="sr-only">(current)</span></a
-                                    >
-                                </li>
-                                <li class="nav-item active">
-                                    <a class="nav-link" href="about.jsp">Food </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="service.jsp">Academy </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="contact.jsp">Physical Fitness</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Login</a>
-                                </li>
-                            </ul>
-                            <form
-                                    class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0"
-                            >
-                                <button
-                                        class="btn my-2 my-sm-0 nav_search-btn"
-                                        type="submit"
-                                ></button>
-                            </form>
-                        </div>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex flex-column flex-lg-row align-items-center">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/product_board"
+                                >Home <span class="sr-only">(current)</span></a
+                                >
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.jsp">Food </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="service.jsp">Academy </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="contact.jsp">Physical Fitness</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Login</a>
+                            </li>
+                        </ul>
+                        <form
+                                class="form-inline my-2 my-lg-0 ml-0 ml-lg-4 mb-3 mb-lg-0"
+                        >
+                            <button
+                                    class="btn my-2 my-sm-0 nav_search-btn"
+                                    type="submit"
+                            ></button>
+                        </form>
                     </div>
-                </nav>
-            </div>
+                </div>
+            </nav>
         </div>
+    </div>
     <!-- end slider section -->
 </div>
+

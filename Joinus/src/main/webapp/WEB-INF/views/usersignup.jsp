@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: b14
-  Date: 2023-05-03
-  Time: 오전 10:33
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -67,19 +60,6 @@
         border:none;
         border-radius: 5px;
     }
-    .resultid{
-        width:60px;
-        height: 20px;
-        font-size:12px;
-        background-color: #df3278;
-        color:#fff;
-        border:none;
-        cursor: pointer;
-        border-radius: 2px;
-        position : relative ;
-        left: 120px;
-
-    }
 
     .btn{
         width:310px;
@@ -140,12 +120,12 @@
                 </label><!--이름-->
 
                 <label>
-                <!-- <span>ID</span> -->
-                <p style="text-align: left; font-size:12px; color:#666">userid</p>
-                <input type="text" placeholder="아이디" class="size"  name="b_id" id="b_id">
+                    <!-- <span>ID</span> -->
+                    <p style="text-align: left; font-size:12px; color:#666">userid</p>
+                    <input type="text" placeholder="아이디" class="size"  name="b_id" id="b_id">
                     <br>
                     <div><span id="id_feedback" style="font-size: 12px;"></span></div>
-<%--                    <input type="button" onclick="idOverlap()" value="중복확인" class="resultid"/>--%>
+                    <%--                    <input type="button" onclick="idOverlap()" value="중복확인" class="resultid"/>--%>
                 </label><!--아이디-->
 
                 <label>
@@ -185,8 +165,8 @@
                 <span><a href="login" >로그인 페이지로 이동</a></span>
             </p>
         </div>
-        </div><!--con-->
-    </div>
+    </div><!--con-->
+</div>
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

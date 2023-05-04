@@ -5,7 +5,7 @@
     <insert id="insert" parameterType="com.ezen.joinus.vo.BusinessUserVO">
         INSERT INTO business_table
 
-        VALUES(business_seq.nextval, #{b_id}, #{b_name}, #{b_pwd1}, #{b_pwd2}, #{b_email}, #{b_phone}, #{b_address}, #{auth})
+        VALUES(business_seq.nextval, #{b_name}, #{b_id}, #{b_pwd1}, #{b_pwd2}, #{b_email}, #{b_phone}, '용인', #{auth})
     </insert>
     <select id="b_idCheck" parameterType="String" resultType="int">
         select count(*) from business_table where b_id=#{b_id}

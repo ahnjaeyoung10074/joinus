@@ -36,6 +36,14 @@ public class SignupController {
             return "redirect:/singup?error_code=-99";
         }
         return "redirect:/login";
+    }
 
+    @RequestMapping("/join")
+    public String join(){
+        return "join";
+    }
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public String busersignup(){
+        return "redirect:/signup";
     }
 }

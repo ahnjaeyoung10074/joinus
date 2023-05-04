@@ -138,23 +138,6 @@
           </select>
         </div> <!-- 옵션선택 끝 -->
         <table border="1">
-<%--          <tr>--%>
-<%--            <c:forEach items="${viewAll}" var="list">--%>
-<%--              <td>--%>
-<%--                <div class="board-item">--%>
-<%--                  <div class="board-thumbnail">--%>
-<%--                    <img src="${list.p_image}" alt="게시물 썸네일">--%>
-<%--                  </div>--%>
-<%--                  <div class="board-content">--%>
-<%--                    <h2 class="board-title"><a href='detail?seq=${list.pno }'>${list.p_info }</a></h2>--%>
-<%--                    <p class="board-info">${list.p_name }</p>--%>
-<%--                    <p class="board-description">${list.p_info }</p>--%>
-<%--                  </div>--%>
-<%--                </div>--%>
-<%--              </td>--%>
-<%--            </c:forEach>--%>
-<%--          </tr>--%>
-
           <div class="board">
             <div class="board-body">
               <ul>
@@ -204,6 +187,6 @@
           .classList.toggle("menu_btn-style");
       }
     </script>
-    <%@ include file="./footer.jsp"%>
   </body>
+    <%@ include file="./footer.jsp"%>
 </html>

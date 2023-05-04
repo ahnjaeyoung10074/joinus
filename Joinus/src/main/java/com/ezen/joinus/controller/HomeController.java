@@ -49,4 +49,3 @@ public class HomeController {
         return "/board/read";
     }
 }
-//simple bit

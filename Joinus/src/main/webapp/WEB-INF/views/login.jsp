@@ -37,7 +37,7 @@
 </head>
 <%@ include file="./header.jsp"%>
 <body>
-  <div class="main">
+  <div class="main" style="margin: 0 auto">
     <h1 class="logo">로그인</h1>
     <form action="login" method="post">
     <div class="container">

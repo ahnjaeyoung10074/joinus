@@ -13,7 +13,12 @@ public class ProductVO {
     private String p_name;
     private String p_subtitle;
     private String p_content;
+    private int p_price;
     private String p_image;
     private String p_period;
     private String p_category;
+
+//    찜 목록 테이블 생성 후 주석 해제
+//    private int wish_count;
+//    private String wish_product;
 }
