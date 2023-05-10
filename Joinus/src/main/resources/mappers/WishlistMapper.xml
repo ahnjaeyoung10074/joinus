@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- WishlistMapper.xml -->
+<mapper namespace="com.ezen.joinus.mappers.WishlistMapper">
+
+    <!-- 로그인한 아이디로 사업자 정보 조회 -->
+    <select id="getBusinessById" resultType="com.ezen.joinus.vo.BusinessUserVO">
+        SELECT * FROM business_table WHERE b_id = #{b_id}
+    </select>
+
+    <!-- 로그인한 사용자의 찜 목록에 추가 -->
+    <insert id="addWishlist" parameterType="com.ezen.joinus.vo.WishlistVO">
+        INSERT INTO wishlist(wno, pno, b_id, w_date)
+        VALUES (wishlist_seq.nextval, #{pno}, #{b_id}, SYSDATE)
+    </insert>
+
+    <delete id="deleteWishlist" parameterType="com.ezen.joinus.vo.WishlistVO">
+        DELETE FROM wishlist
+        WHERE pno = #{pno}
+    </delete>
+
+    <select id="selectWishlistByPno" parameterType="int" resultType="com.ezen.joinus.vo.WishlistVO">
+        SELECT * FROM wishlist WHERE pno = #{pno}
+    </select>
+</mapper>

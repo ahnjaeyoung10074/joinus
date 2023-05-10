@@ -26,7 +26,7 @@
           type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css"
   />
-
+  <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="../../../resources/css/bootstrap.css" />
 
@@ -69,7 +69,7 @@
     border-top: none;
   }
 </style>
-<%@ include file="../header.jsp"%>
+<%@ include file="../header/header.jsp"%>
 <body class="sub_page about_page">
 <table id="datatable-scroller"
        class="table table-bordered tbl_Form">
@@ -128,7 +128,15 @@
             <label for="totalPrice">총 가격</label>
             <input type="number" class="form-control" id="totalPrice" value="${productVO.p_price}" readonly>
           </div>
-          <button type="button" class="btn btn-warning" onclick="addWishlist()">❤</button>
+          <c:choose>
+            <c:when test="${like == 1}">
+              <button type="button" class="btn btn-warning" id="wishBtn" data-a='${productVO.pno}' data-b='${businessUserVO.b_id}'>❤️</button>
+            </c:when>
+            <c:otherwise>
+              <button type="button" class="btn btn-warning" id="wishBtn" data-a='${productVO.pno}' data-b='${businessUserVO.b_id}'>🤍</button>
+            </c:otherwise>
+          </c:choose>
+
           <button type="submit" class="btn btn-primary mr-2">장바구니</button>
           <button type="submit" class="btn btn-success">구매하기</button>
         </form>
@@ -198,11 +206,85 @@
     const totalPrice = quantity * price;
     document.getElementById("totalPrice").value = totalPrice;
   }
-
-  const addWishlist = () => {
-    // 찜하기 버튼 클릭 시 실행되는 함수
-
+    // 로그인 여부 확인 함수
+  function isLoggedIn() {
+    // 로그인 여부를 확인하는 코드 작성
+    // 로그인되어 있으면 true 반환, 아니면 false 반환
+    // 예시:
+    if (${businessUserVO == null || businessUserVO.b_id == null}) {
+      return false;
+    } else {
+      return true;
+    }
   }
+  $(document).ready(function (e) {
+    $('#wishBtn').click(function (e) {
+      var data_like = $("#wishBtn").text()
+      // console.log("data_like : " + data_like)
+      var f1 = $('#wishBtn').data('a');
+      var f2 = $('#wishBtn').data('b');
+      var flag = false
+      if(data_like == "❤️"){
+        deleteWishlist();
+        if (${businessUserVO != null || businessUserVO.b_id != null}){
+          flag = !flag
+          $('#wishBtn').text("🤍");
+          console.log('여기는 삭제');
+        }
+      } else {
+        addWishlist(f1, f2);
+        if (${businessUserVO != null || businessUserVO.b_id != null}){
+          flag = !flag
+          console.log('여기는 추가');
+          $('#wishBtn').text("❤️");
+        }
+      }
+    });
+  });
+  function addWishlist(pno, b_id) {
+    // 로그인 여부 확인
+    if (!isLoggedIn()) {
+      alert("로그인 후 이용해주세요.");
+      return;
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: "/wishlist/add",
+      data: {
+        pno,
+        b_id
+      },
+      success: function(data) {
+        alert("찜 목록에 추가되었습니다.");
+      },
+      error: function(request, status, error) {
+        console.log("에러")
+        alert(error);
+      }
+    });
+  }
+
+  function deleteWishlist() {
+    // 로그인 여부 확인
+    if (!isLoggedIn()) {
+      alert("로그인 후 이용해주세요.");
+      return;
+    }
+
+    $.ajax({
+      type: "GET",
+      url: "/wishlist/delete?pno="+${productVO.pno},
+      success: function(data) {
+        console.log("삭제 들어오나");
+        alert("찜 목록에서 삭제되었습니다.");
+      },
+      error: function (xhr, status, error) {
+        alert(error);
+      },
+    });
+  }
+
 </script>
 </body>
 <%@ include file="../footer.jsp"%>

@@ -120,7 +120,7 @@
       location.href="product_board?nowPage=${paging.nowPage}&cntPerPage="+sel;
     }
   </script>
-  <%@ include file="./header.jsp"%>
+  <%@ include file="header/header.jsp"%>
   <body class="sub_page about_page">
     <!-- about section -->
     <section class="about_section layout_padding">

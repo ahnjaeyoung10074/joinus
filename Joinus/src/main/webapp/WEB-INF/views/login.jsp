@@ -1,4 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+  String errormessage = (String) session.getAttribute("errormessage");
+  if(errormessage==null) errormessage="";
+  session.invalidate();
+%>
 <html>
 <head>
   <!-- Basic -->
@@ -35,7 +40,7 @@
   <link href="../../resources/css/responsive.css" rel="stylesheet" />
   <link href="../../resources/css/logincss.css" rel="stylesheet" />
 </head>
-<%@ include file="./header.jsp"%>
+<%@ include file="header/header.jsp"%>
 <body>
   <div class="main" style="margin: 0 auto">
     <h1 class="logo">로그인</h1>
@@ -43,6 +48,9 @@
     <div class="container">
       <input type="text" placeholder="ID" name="b_id" id="b_id" class="account">
       <input type="password" placeholder="Password" name="b_pwd1" id="b_pwd1" class="account">
+      <div id="errormessage" style="color:red;" >
+        <%=errormessage%>
+      </div>
       <button type="submit" id="login" class="account">login</button>
       <p id="alert" class="account"> </p>
     </div>
