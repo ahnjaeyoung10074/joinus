@@ -1,16 +1,20 @@
 package com.ezen.joinus.controller;
 
 
-import com.ezen.joinus.mappers.UserMapper;
+import com.ezen.joinus.mappers.BusinessUserMapper;
+import com.ezen.joinus.mappers.CustomerUserMapper;
 import com.ezen.joinus.vo.BusinessUserVO;
+import com.ezen.joinus.vo.CustomerUserVO;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 
@@ -18,7 +22,10 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Setter(onMethod_=@Autowired)
-    private UserMapper mapper;
+    private BusinessUserMapper mapper;
+
+    @Setter(onMethod_=@Autowired)
+    private CustomerUserMapper userMapper;
 
 
     @GetMapping("/b_idCheck")
@@ -34,23 +41,62 @@ public class LoginController {
     public String login(HttpSession session){
         Long b_id = (Long) session.getAttribute("userid");
         if(b_id !=null){
-            return "redirect:/login";
+            return "main/login";
         }
-        return "login";
+        return "main/login";
     }
 
     @PostMapping("/login")
-    public String login(String b_id,String b_pwd1, HttpSession session) throws Exception {
+    public String login(String b_id, String b_pwd1, HttpSession session, HttpServletRequest request) throws Exception {
         BusinessUserVO BusinessUserVO=mapper.MemberLogin(b_id);
         System.out.println(b_id);
         System.out.println(b_pwd1);
-        if(BusinessUserVO==null) return "redirect:/login";
+
+        if(BusinessUserVO==null) return "main/login";
         else { //id는 맞음
             if(!BusinessUserVO.getB_pwd1().equals(b_pwd1)) { //비밀번호는 틀림
-
-                return "redirect:/login";
+                session.setAttribute("errormessage","로그인 정보가 맞지 않습니다.");
+                return "main/login";
             }else { //비밀번호도 맞음
+                session.setAttribute("id",BusinessUserVO.getB_id());
                 session.setAttribute("BusinessUserVO", BusinessUserVO);
+                return "redirect:/product_board";
+
+            }
+        }
+
+    }
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "redirect:/product_board";
+
+    }
+    //고객
+    @GetMapping("/u_idCheck")
+    public @ResponseBody int u_idCheck(String u_id){
+        System.out.println("u_id:"+u_id);
+
+        int result = userMapper.u_idCheck(u_id);
+        System.out.println("result : " + result);
+        return result;
+
+    }
+    @PostMapping("/customerlogin")
+    public String customerlogin(String u_id, String u_pwd1, HttpSession session, HttpServletRequest request) throws Exception {
+        CustomerUserVO customerUserVO = userMapper.CustomerLogin(u_id);
+
+        System.out.println(u_id);
+        System.out.println(u_pwd1);
+
+        if(customerUserVO==null) return "main/login";
+        else { //id는 맞음
+            if(!customerUserVO.getU_pwd1().equals(u_pwd1)) { //비밀번호는 틀림
+                session.setAttribute("cerrormessage","로그인 정보가 맞지 않습니다.");
+                return "main/login";
+            }else { //비밀번호도 맞음
+                session.setAttribute("id",customerUserVO.getU_id());
+                session.setAttribute("customerUserVO", customerUserVO);
                 return "redirect:/product_board";
 
             }

@@ -2,8 +2,10 @@ package com.ezen.joinus.controller;
 
 
 
-import com.ezen.joinus.mappers.UserMapper;
+import com.ezen.joinus.mappers.BusinessUserMapper;
+import com.ezen.joinus.mappers.CustomerUserMapper;
 import com.ezen.joinus.vo.BusinessUserVO;
+import com.ezen.joinus.vo.CustomerUserVO;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -11,19 +13,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 ;
 
-import javax.servlet.http.HttpServletRequest;
-
 
 @Controller
 public class SignupController {
 
     @Setter(onMethod_=@Autowired)
-    private UserMapper mapper;
+    private BusinessUserMapper mapper;
+
+    @Setter(onMethod_=@Autowired)
+    private CustomerUserMapper userMapper;
 
     @RequestMapping("/signup")
     public String signup(){
 //        mapper.insert(BusinessUserVO);
-        return "signup";
+        return "business/signup";
     }
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signupinfo(BusinessUserVO BusinessUserVO){
@@ -35,15 +38,43 @@ public class SignupController {
             e.printStackTrace();
             return "redirect:/singup?error_code=-99";
         }
-        return "redirect:/login";
+        return "business/signupstore";
     }
+
 
     @RequestMapping("/join")
     public String join(){
-        return "join";
+        return "main/join";
     }
     @RequestMapping(value = "/join", method = RequestMethod.POST)
     public String busersignup(){
-        return "redirect:/signup";
+        return "business/signup";
     }
+
+
+// 고객 회원가입
+    @RequestMapping("/customerjoin")
+    public String customerjoin(){
+        return "customer/customersignup";
+    }
+
+    @RequestMapping(value = "/customerjoin", method = RequestMethod.POST)
+    public String customersignup(){
+        return "redirect:/customerjoin";
+    }
+
+    @RequestMapping(value = "/customersignup" ,method = RequestMethod.POST)
+    public String customersignup(CustomerUserVO customerUserVO){
+        try {
+            userMapper.insert(customerUserVO);
+        }catch (DuplicateKeyException e){
+            return "redirect:/customersignup?error_code=-1";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "redirect:/customersignup?error_code=-99";
+        }
+        return "main/login";
+    }
+
+
 }
