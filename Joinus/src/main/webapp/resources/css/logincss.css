@@ -1,5 +1,5 @@
 .main {
-    width: 250px;
+    width: 150px;
     height: 300px;
     display: flex;
     justify-content: center;
@@ -15,12 +15,18 @@
     margin-bottom: 40px;
 }
 
-#login {
-    width: 100%;
-    background-color: #ff6f84;
-    border-color: transparent;
-    color: white;
-}
+/*#login {*/
+/*    width: 100%;*/
+/*    background-color: #ff6f84;*/
+/*    border-color: transparent;*/
+/*    color: white;*/
+/*}*/
+/*#login1 {*/
+/*    width: 100%;*/
+/*    background-color: #ff6f84;*/
+/*    border-color: transparent;*/
+/*    color: white;*/
+/*}*/
 
 .account {
     display: block;

@@ -5,7 +5,8 @@
     <insert id="insert" parameterType="com.ezen.joinus.vo.BusinessUserVO">
         INSERT INTO business_table
 
-        VALUES(business_seq.nextval, #{b_name}, #{b_id}, #{b_pwd1}, #{b_pwd2}, #{b_email}, #{b_phone}, #{b_address}, 'B', 0, 0)
+        VALUES(business_seq.nextval, #{b_name}, #{b_id}, #{b_pwd1}, #{b_pwd2}, #{b_email}, #{b_phone}, #{b_address}, 'B')
+
     </insert>
     <select id="b_idCheck" parameterType="String" resultType="int">
         select count(*) from business_table where b_id=#{b_id}
@@ -13,9 +14,11 @@
     <select id="MemberLogin" resultType="com.ezen.joinus.vo.BusinessUserVO">
         select bno, b_id, b_pwd1, b_pwd2, b_email, b_phone, b_address, auth from business_table where b_id=#{b_id,jdbcType=VARCHAR}
     </select>
-    <select id="getBusinessById" resultType="com.ezen.joinus.vo.BusinessUserVO">
-        SELECT * FROM business_table WHERE b_id =  #{b_id,jdbcType=VARCHAR}
+
+    <select id="getMaxBno" resultType="long">
+        select max(bno) from business_table
     </select>
+
 
 
 </mapper>

@@ -4,6 +4,6 @@ import com.ezen.joinus.vo.WishlistVO;
 
 public interface WishlistService {
     void addWishlist(WishlistVO wishlistVO);
-    void deleteWishlist(int pno);
-    WishlistVO getWishlistByPno(int pno);
+    void deleteWishlist(int pno, String u_id);
+    WishlistVO getWishlistByPnoAndUid(int pno, String u_id);
 }

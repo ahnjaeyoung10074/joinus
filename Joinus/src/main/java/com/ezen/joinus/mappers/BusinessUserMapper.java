@@ -5,11 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface BusinessUserMapper {
+
     void insert(BusinessUserVO vo);
     int b_idCheck(String b_id);
     BusinessUserVO MemberLogin(String b_id) throws Exception;
+    Long getMaxBno();
 
-    BusinessUserVO getBusinessById(String b_id);
 
 
 

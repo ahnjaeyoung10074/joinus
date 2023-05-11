@@ -91,7 +91,7 @@
                         </a>
                     </li>
                     <li class="nav-item1">
-                        <a class="nav-link1" href="/mybasket" role="button" style="top: 5px; height: 10px;">
+                        <a class="nav-link1" href="/mycart" role="button" style="top: 5px; height: 10px;">
                             장바구니
                         </a>
                     </li>

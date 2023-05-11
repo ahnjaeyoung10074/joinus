@@ -3,14 +3,8 @@ package com.ezen.joinus.controller;
 
 
 import com.ezen.joinus.mappers.BusinessUserMapper;
-import com.ezen.joinus.service.BoardService;
-import com.ezen.joinus.service.BusinessService;
-import com.ezen.joinus.service.ProductService;
-import com.ezen.joinus.service.WishlistService;
-import com.ezen.joinus.vo.BusinessUserVO;
-import com.ezen.joinus.vo.PagingVO;
-import com.ezen.joinus.vo.ProductVO;
-import com.ezen.joinus.vo.WishlistVO;
+import com.ezen.joinus.service.*;
+import com.ezen.joinus.vo.*;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -28,10 +24,12 @@ public class HomeController {
     private BoardService boardService;
     @Setter(onMethod_=@Autowired)
     private ProductService productService;
-    @Autowired
-    private BusinessService businessService;
     @Setter(onMethod_=@Autowired)
-    private BusinessUserMapper businessUserMapper;
+    private CustomerService customerService;
+    @Setter(onMethod_=@Autowired)
+    private WishlistService wishlistService;
+    @Setter(onMethod_=@Autowired)
+    private CartService cartService;
 
     //페이징 처리
     @GetMapping("/product_board")
@@ -52,7 +50,7 @@ public class HomeController {
         vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
         model.addAttribute("paging", vo);
         model.addAttribute("viewAll", boardService.selectBoard(vo));
-        return "about";
+        return "main/about";
     }
     // 게시물 이동
 
@@ -63,17 +61,32 @@ public class HomeController {
         System.out.println(productVO);
         model.addAttribute("productVO", productVO);
 
-        // 사업자 정보 가져오기
-        String b_id = (String) session.getAttribute("id");
-        System.out.println("로그인 된 비지니스 사용자 아이디 불러오나?:"+b_id);
-        BusinessUserVO businessUserVO = businessService.getBusinessById(b_id);
-        System.out.println(businessUserVO);
-        model.addAttribute("businessUserVO", businessUserVO);
+        // 사용자 정보 가져오기
+        String u_id = (String) session.getAttribute("id");
+        System.out.println("로그인 된 사용자 아이디 불러오나?:"+u_id);
+        CustomerUserVO customerUserVO = customerService.getCustomerById(u_id);
+        System.out.println(customerUserVO);
+        model.addAttribute("customerUserVO", customerUserVO);
 
-        if (null != wishlistService.getWishlistByPno(pno)){
-            model.addAttribute("like", 1);
-        }else {
-            model.addAttribute("like", 0);
+        try{
+            WishlistVO wishlist = wishlistService.getWishlistByPnoAndUid(pno, u_id);
+            System.out.println("wishlist : " + wishlist );
+            if (wishlist != null) {
+                model.addAttribute("like", 1);
+            } else {
+                model.addAttribute("like", 0);
+            }
+
+            CartVO cart = cartService.getCartByPnoAndUid(pno, u_id);
+            System.out.println("cart : " + cart);
+            if (cart != null) {
+                model.addAttribute("cart", 1);
+            } else {
+                model.addAttribute("cart", 0);
+            }
+        }catch (Exception e){
+            System.out.println("로그인 안해서 여기 진입 합니다.");
+            productService.getProductContents(pno);
         }
 
 
@@ -81,52 +94,34 @@ public class HomeController {
     }
 
 
-    @Autowired
-    private WishlistService wishlistService;
-
-
-//    @Autowired
-//    private CustomerService customerService;
-//
-
     // 해당 상품을 찜 목록에 추가하는 기능
     @PostMapping("/wishlist/add")
     public ResponseEntity<String> addWishlist(WishlistVO vo, HttpSession session) {
         String id = (String) session.getAttribute("id");
         System.out.println("찜 컨트롤러에 아이디 불러오나?:"+vo);
-//        // 개인 고객인 경우
-//        CustomerDto customerDto = customerService.getCustomerById(id);
-//        if (customerDto != null) {
-//            WishlistDto wishlistDto = new WishlistDto();
-//            wishlistDto.setPno(pno);
-//            wishlistDto.setU_id(id);
-//            wishlistDto.setW_date(new Date());
-//            wishlistService.addWishlist(wishlistDto);
-//
-//            model.addAttribute("msg", "찜 목록에 추가되었습니다.");
-//            return "redirect:/product?no=" + pno;
-//        }
 
         // 로그인한 사용자 정보가 없는 경우
         if (id == null) {
             return ResponseEntity.badRequest().body("로그인 후 이용해주세요.");
         }
 
-        BusinessUserVO businessUserVO = businessService.getBusinessById(id);
-        System.out.println("사업자 정보:"+businessUserVO);
-        // 사업자 정보가 없는 경우
-        if (businessUserVO == null) {
-            return ResponseEntity.badRequest().body("사업자만 이용 가능합니다.");
+        CustomerUserVO customerUserVO = customerService.getCustomerById(id);
+        System.out.println("사용자 정보:"+customerUserVO);
+        // 사용자 정보가 없는 경우
+        if (customerUserVO == null) {
+            return ResponseEntity.badRequest().body("사용자만 이용 가능합니다.");
         }
         WishlistVO wishlistVO = new WishlistVO();
         wishlistVO.setPno(vo.getPno());
-        wishlistVO.setB_id(id);
+        wishlistVO.setU_id(id);
         wishlistVO.setW_date(new Date());
         System.out.println("WISHLISTVO:" + wishlistVO);
         wishlistService.addWishlist(wishlistVO);
 
-        return   new ResponseEntity("찜 목록에 추가되었습니다.", HttpStatus.OK);
+        return new ResponseEntity("찜 목록에 추가되었습니다.", HttpStatus.OK);
     }
+
+    // 해당 상품을 찜 목록에서 삭제하는 기능
     @GetMapping("/wishlist/delete")
     public ResponseEntity<String> deleteWishlist(int pno, HttpSession session) {
         String id = (String) session.getAttribute("id");
@@ -136,15 +131,67 @@ public class HomeController {
             return new ResponseEntity("로그인 후 이용해 주세요.", HttpStatus.OK);
         }
 
-        wishlistService.getWishlistByPno(pno);
-        wishlistService.deleteWishlist(pno);
+        wishlistService.getWishlistByPnoAndUid(pno, id);
+        wishlistService.deleteWishlist(pno, id);
         System.out.println("삭제 성공");
 
         // 찜 목록에서 해당 상품 삭제
         System.out.println(pno);
-        System.out.println("WISHLISTVO:" + pno);
+        System.out.println("상품번호 pno :" + pno);
         return new ResponseEntity("찜 목록에서 삭제되었습니다.", HttpStatus.OK);
     }
+
+    // 해당 상품을 장바구니에 추가하는 기능
+    @PostMapping("/cart/add")
+    public ResponseEntity<String> addCart(CartVO vo, HttpSession session, @RequestParam int quantity) {
+        String id = (String) session.getAttribute("id");
+        System.out.println("장바구니 컨트롤러에 아이디 불러오나?:" + vo);
+
+        // 로그인한 사용자 정보가 없는 경우
+        if (id == null) {
+            return ResponseEntity.badRequest().body("로그인 후 이용해주세요.");
+        }
+
+        CustomerUserVO customerUserVO = customerService.getCustomerById(id);
+        System.out.println("사용자 정보:" + customerUserVO);
+        // 사용자 정보가 없는 경우
+        if (customerUserVO == null) {
+            return ResponseEntity.badRequest().body("사용자만 이용 가능합니다.");
+        }
+
+        CartVO cartVO = new CartVO();
+        cartVO.setPno(vo.getPno());
+        cartVO.setU_id(id);
+        cartVO.setW_date(new Date());
+        cartVO.setQuantity(quantity); // 수량 설정
+
+        System.out.println("cartVO:" + cartVO);
+        cartService.addCart(cartVO);
+
+        return new ResponseEntity("찜 목록에 추가되었습니다.", HttpStatus.OK);
+    }
+
+
+    // 해당 상품을 장바구니에서 삭제하는 기능
+    @GetMapping("/cart/delete")
+    public ResponseEntity<String> deleteCart(int pno, HttpSession session) {
+        String id = (String) session.getAttribute("id");
+        System.out.println("장바구니 삭제 컨트롤러에 pno 불러오나?:"+pno);
+        // 로그인한 사용자 정보가 없는 경우
+        if (id == null) {
+            return new ResponseEntity("로그인 후 이용해 주세요.", HttpStatus.OK);
+        }
+
+        cartService.getCartByPnoAndUid(pno, id);
+        cartService.deleteCart(pno, id);
+        System.out.println("삭제 성공");
+
+        // 찜 목록에서 해당 상품 삭제
+        System.out.println(pno);
+        System.out.println("상품번호 pno :" + pno);
+        return new ResponseEntity("장바구니에서 삭제되었습니다.", HttpStatus.OK);
+    }
+
 
 
 }

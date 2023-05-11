@@ -83,15 +83,15 @@ public class LoginController {
 
     }
     @PostMapping("/customerlogin")
-    public String customerlogin(String u_id, String u_pwd1, HttpSession session, HttpServletRequest request) throws Exception {
+    public String customerlogin(String u_id, String u_pwd, HttpSession session, HttpServletRequest request) throws Exception {
         CustomerUserVO customerUserVO = userMapper.CustomerLogin(u_id);
 
         System.out.println(u_id);
-        System.out.println(u_pwd1);
+        System.out.println(u_pwd);
 
         if(customerUserVO==null) return "main/login";
         else { //id는 맞음
-            if(!customerUserVO.getU_pwd1().equals(u_pwd1)) { //비밀번호는 틀림
+            if(!customerUserVO.getU_pwd().equals(u_pwd)) { //비밀번호는 틀림
                 session.setAttribute("cerrormessage","로그인 정보가 맞지 않습니다.");
                 return "main/login";
             }else { //비밀번호도 맞음

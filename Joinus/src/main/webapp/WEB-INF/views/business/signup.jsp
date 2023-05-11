@@ -5,7 +5,10 @@
   Time: 오전 10:33
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    request.setCharacterEncoding("UTF-8");
+%>
 <html>
 <head>
     <title>Title</title>
@@ -67,19 +70,25 @@
         border:none;
         border-radius: 5px;
     }
-    .resultid{
-        width:60px;
-        height: 20px;
-        font-size:12px;
-        background-color: #df3278;
-        color:#fff;
+    .size2{
+        width:200px;
+        height:30px;
+        padding-left:10px;
+        background-color: #f4f4f4;
+        /* margin-left:10px; */
         border:none;
-        cursor: pointer;
-        border-radius: 2px;
-        position : relative ;
-        left: 120px;
-
+        border-radius: 5px;
     }
+    .size3{
+        width:60px;
+        height:30px;
+        padding-left:10px;
+        background-color: #f4f4f4;
+        /* margin-left:10px; */
+        border:none;
+        border-radius: 5px;
+    }
+
 
     .btn{
         width:310px;
@@ -130,7 +139,7 @@
     <div id="login">
         <div id="login_form"><!--로그인 폼-->
             <form action="/signup" method="post">
-                <h3 class="login" style="letter-spacing:-1px;">Sign up to Web</h3>
+                <h3 class="login" style="letter-spacing:-1px;">사업자 회원가입</h3>
                 <hr>
                 <label>
                     <!-- <span>ID</span> -->
@@ -164,10 +173,22 @@
                 <label>
                     <!-- <span>PW</span> -->
                     <p style="text-align: left; font-size:12px; color:#666">phone number </p>
-                    <input type="number" placeholder="-빼고 숫자만 입력" class="size" name="b_phone" id="b_phone" >
+                    <input type="text" placeholder="-빼고 숫자만 입력" class="size" name="b_phone" id="b_phone" >
                 </label><!--전화번호-->
                 <label>
                     <p style="text-align: left; font-size:12px; color:#666">address </p>
+
+                    <div class="form-group">
+                        <input class="size1"  placeholder="우편번호" name="b_address" id="addr1" type="text" readonly="readonly" >
+                        <button type="button" class="btn1"  onclick="execPostCode();"><i class="fa fa-search"></i> 우편번호 찾기</button>
+                    </div>
+                    <div class="form-group">
+                        <input class="size"  placeholder="도로명 주소" name="b_address" id="addr2" type="text" readonly="readonly" />
+                    </div>
+                    <div class="form-group">
+                        <input class="size" placeholder="상세주소" name="b_address" id="addr3" type="text"  />
+                    </div>
+
                     <select id=city class="size3" name="b_address" >
                         <option name="city" value="서울시">서울</option>
                         <option name="city" value="수원시">수원</option>
@@ -175,18 +196,16 @@
                         <option name="city" value="부산시">부산</option>
                     </select>
                     <input type="text" placeholder="구" class="size2" name="b_address" id="b_address">
+
                 </label>
                 <label>
                     <!-- <span>PW</span> -->
                     <p style="text-align: left; font-size:12px; color:#666">E-mail</p>
                     <input type="text" placeholder="이메일" class="size" name="b_email" id="b_email" >
                 </label> <!--이메일-->
-
-
                 <br>
                 <p>
-                    <input type="submit" value="Create Acoout" class="btn">
-
+                    <input type="submit" value="다음으로" class="btn">
                 </p>
             </form>
 
@@ -236,6 +255,18 @@
             $("#result").html('비밀번호가 같지 않습니다.');
             $("#result").css('color','#2fb380');
         }
+    })
+    $('.btn').click(function () {
+        var b_pwd2 = $('#b_pwd2').val();
+        var b_pwd1 = $('#b_pwd1').val();
+        if (b_pwd1==b_pwd2){
+            pass;
+        }else {
+            alert('비밀번호가 같지 않습니다.');
+            return false;
+
+        }
+
     })
 
 

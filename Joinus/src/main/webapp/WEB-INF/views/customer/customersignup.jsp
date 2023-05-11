@@ -160,7 +160,7 @@
                 <label>
                     <!-- <span>PW</span> -->
                     <p style="text-align: left; font-size:12px; color:#666">Password </p>
-                    <input type="password" placeholder="비밀번호" class="size" name="u_pwd1" id="u_pwd1">
+                    <input type="password" placeholder="비밀번호" class="size" name="u_pwd" id="u_pwd">
                 </label><!--비밀번호-->
 
                 <label>
@@ -240,9 +240,9 @@
     $('#u_pwd2').keyup(function (){
 
         var u_pwd2 = $('#u_pwd2').val();
-        var u_pwd1 = $('#u_pwd1').val();
+        var u_pwd = $('#u_pwd').val();
 
-        if (u_pwd1==u_pwd2){
+        if (u_pwd==u_pwd2){
             $("#result").html('비밀번호가 같습니다.');
             $("#result").css('color','#dc3545');
         }else {
@@ -252,8 +252,8 @@
     })
     $('.btn').click(function () {
         var u_pwd2 = $('#u_pwd2').val();
-        var u_pwd1 = $('#u_pwd1').val();
-        if (u_pwd2==u_pwd1){
+        var u_pwd = $('#u_pwd').val();
+        if (u_pwd2==u_pwd){
             pass;
         }else {
             alert('비밀번호가 같지 않습니다.');

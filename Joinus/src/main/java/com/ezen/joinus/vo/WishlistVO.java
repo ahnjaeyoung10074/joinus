@@ -13,7 +13,6 @@ public class WishlistVO {
     private int wno;
     private int pno;
     private String u_id;
-    private String b_id;
     private Date w_date;
 
 }

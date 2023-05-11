@@ -130,15 +130,22 @@
           </div>
           <c:choose>
             <c:when test="${like == 1}">
-              <button type="button" class="btn btn-warning" id="wishBtn" data-a='${productVO.pno}' data-b='${businessUserVO.b_id}'>❤️</button>
+              <button type="button" class="btn btn-warning" id="wishBtn" data-a='${productVO.pno}' data-b='${customerUserVO.u_id}'>❤️</button>
             </c:when>
             <c:otherwise>
-              <button type="button" class="btn btn-warning" id="wishBtn" data-a='${productVO.pno}' data-b='${businessUserVO.b_id}'>🤍</button>
+              <button type="button" class="btn btn-warning" id="wishBtn" data-a='${productVO.pno}' data-b='${customerUserVO.u_id}'>🤍</button>
             </c:otherwise>
           </c:choose>
 
-          <button type="submit" class="btn btn-primary mr-2">장바구니</button>
-          <button type="submit" class="btn btn-success">구매하기</button>
+          <c:choose>
+            <c:when test="${cart == 1}">
+              <button type="button" class="btn btn-primary" id="cartBtn" data-c='${productVO.pno}' data-d='${customerUserVO.u_id}'>🛒</button>
+            </c:when>
+            <c:otherwise>
+              <button type="button" class="btn btn-primary" id="cartBtn" data-c='${productVO.pno}' data-d='${customerUserVO.u_id}'>장바구니담기</button>
+            </c:otherwise>
+          </c:choose>
+          <button type="submit" class="btn btn-success">구매</button>
         </form>
       </div>
 
@@ -149,7 +156,7 @@
       <button class="tablinks" onclick="openTab(event, 'product_info')">상품 상세 정보</button>
       <button class="tablinks" onclick="openTab(event, 'reviews')">구매후기</button>
       <button class="tablinks" onclick="openTab(event, 'qna')">상품문의</button>
-      <button class="tablinks" onclick="openTab(event, 'refund')">환불</button>
+      <button class="tablinks" onclick="openTab(event, 'refuand')">환불</button>
     </div>
     <!-- 탭 내용 -->
     <div id="product_info" class="tabcontent">
@@ -183,8 +190,8 @@
             .classList.toggle("menu_btn-style");
   }
 </script>
-<!-- 탭 스크립트 -->
 <script>
+  <!-- 탭 스크립트 -->
   function openTab(evt, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -200,18 +207,21 @@
   }
 </script>
 <script>
+  // 총금액 카운트
   function updateTotalPrice() {
     const quantity = document.getElementById("quantityInput").value;
     const price = ${productVO.p_price};
     const totalPrice = quantity * price;
     document.getElementById("totalPrice").value = totalPrice;
   }
+</script>
+<script>
     // 로그인 여부 확인 함수
   function isLoggedIn() {
     // 로그인 여부를 확인하는 코드 작성
     // 로그인되어 있으면 true 반환, 아니면 false 반환
     // 예시:
-    if (${businessUserVO == null || businessUserVO.b_id == null}) {
+    if (${customerUserVO == null || customerUserVO.u_id == null}) {
       return false;
     } else {
       return true;
@@ -226,17 +236,17 @@
       var flag = false
       if(data_like == "❤️"){
         deleteWishlist();
-        if (${businessUserVO != null || businessUserVO.b_id != null}){
+        if (${customerUserVO != null || customerUserVO.u_id != null}){
           flag = !flag
           $('#wishBtn').text("🤍");
           console.log('여기는 삭제');
         }
       } else {
         addWishlist(f1, f2);
-        if (${businessUserVO != null || businessUserVO.b_id != null}){
+        if (${customerUserVO != null || customerUserVO.u_id != null}){
           flag = !flag
-          console.log('여기는 추가');
           $('#wishBtn').text("❤️");
+          console.log('여기는 추가');
         }
       }
     });
@@ -253,7 +263,8 @@
       url: "/wishlist/add",
       data: {
         pno,
-        b_id
+        b_id,
+
       },
       success: function(data) {
         alert("찜 목록에 추가되었습니다.");
@@ -284,8 +295,82 @@
       },
     });
   }
+</script>
+<script>
+  $(document).ready(function (e) {
+    $('#cartBtn').click(function (e) {
+      var data_cart = $("#cartBtn").text()
+      // console.log("data_like : " + data_like)
+      var f3 = $('#cartBtn').data('c');
+      var f4 = $('#cartBtn').data('d');
+      var flag = false
+      if(data_cart == "🛒"){
+        deleteCart();
+        if (${customerUserVO != null || customerUserVO.u_id != null}){
+          flag = !flag
+          $('#cartBtn').text("장바구니담기");
+          console.log('여기는 삭제');
+        }
+      } else {
+        addCart(f3, f4);
+        if (${customerUserVO != null || customerUserVO.u_id != null}){
+          flag = !flag
+          $('#cartBtn').text("🛒");
+          console.log('여기는 추가');
+        }
+      }
+    });
+  });
+  function addCart(pno, b_id) {
+    // 로그인 여부 확인
+    if (!isLoggedIn()) {
+      alert("로그인 후 이용해주세요.");
+      return;
+    }
 
+    // 수량 가져오기
+    const quantity = document.getElementById("quantityInput").value;
+
+    $.ajax({
+      type: 'POST',
+      url: "/cart/add",
+      data: {
+        pno,
+        b_id,
+        quantity // 수량 추가
+      },
+      success: function(data) {
+        alert("장바구니에 추가되었습니다.");
+      },
+      error: function(request, status, error) {
+        console.log("에러")
+        alert(error);
+      }
+    });
+  }
+
+
+  function deleteCart() {
+    // 로그인 여부 확인
+    if (!isLoggedIn()) {
+      alert("로그인 후 이용해주세요.");
+      return;
+    }
+
+    $.ajax({
+      type: "GET",
+      url: "/cart/delete?pno="+${productVO.pno},
+      success: function(data) {
+        console.log("삭제 들어오나");
+        alert("장바구니에서 삭제되었습니다.");
+      },
+      error: function (xhr, status, error) {
+        alert(error);
+      },
+    });
+  }
 </script>
 </body>
-<%@ include file="../footer.jsp"%>
+<%@ include file="../footer/footer.jsp"%>
+
 </html>

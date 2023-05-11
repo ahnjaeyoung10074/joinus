@@ -1,77 +1,145 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: b14
-  Date: 2023-05-04
-  Time: 오후 3:52
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
   <title>Title</title>
-</head>
 <%@ include file="../header/header.jsp"%>
-<style>
-  @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 100;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');}
-  @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 300;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 400;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 500;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 700;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');} @font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 900;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf) format('opentype');}
-  /*.container {*/
-  /*  display: flex;*/
-  /*  flex-wrap: wrap;*/
-  /*  justify-content: center;*/
-  /*  align-items: center;*/
-  /*  max-width: 800px;*/
-  /*  margin: 0 auto;*/
-  /*}*/
-  label {
-    margin-left: 10px;
-  }
+  <style>
+    /* 테이블 스타일 */
+    table {
+      border-collapse: collapse;
+      width: 70%;
+      margin: 0 auto;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
 
-  input[type="text"], button {
-    margin-left: 10px;
-  }
-  #form{
-    width: 500px;
-    height: 300px;
-    text-align: center;
-    margin-left: 300px;
-    justify-content: center;
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
 
-  }
-</style>
+    th {
+      background-color: #f2f2f2;
+    }
+
+    /* 컨테이너 스타일 */
+    .container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* 버튼 스타일 */
+    button {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #ed969e;
+      color: white;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #ff6f84;
+    }
+
+    /* 비어있는 메시지 스타일 */
+    .empty-message {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+    /* 총 구매 금액 스타일 */
+    .total-price-container {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #888;
+    }
+  </style>
+
 </head>
 <body>
-<br>
 <div class="container">
-  <form id="form">
-  <h1 >장바구니</h1>
-  <div>
-    <input type="checkbox" id="item1" name="item1" value="item1">
-    <label for="item1">아이템 1</label>
-    <input type="text" id="quantity1" name="quantity1" value="1">
-    <button type="button" id="delete1">삭제</button>
+  <table border="1">
+    <thead>
+    <tr>
+      <th>상품번호</th>
+      <th>상품내용</th>
+      <th>수량</th>
+      <th>금액</th>
+      <th>선택</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <c:forEach items="${cart}" var="cart">
+      <tr>
+        <td>${cart.pno}</td>
+        <td><a href='/board/read?pno=${cart.pno}'>${cart.product.p_content}</a></td>
+        <td>${cart.quantity}</td>
+        <td>
+          <span class="total" data-price=${cart.product.p_price * cart.quantity}>${cart.product.p_price * cart.quantity}</span>
+        </td>
+        <td>
+          <input type="checkbox" class="selectedItems" name="selectedItems" value="${cart.pno}">
+        </td>
+      </tr>
+    </c:forEach>
+    </tbody>
+  </table>
+</div>
+<%-- 장바구니가 비었을 때 메시지 표시 --%>
+<c:if test="${empty cart}">
+  <div class="empty-message">
+    장바구니가 비었습니다.
   </div>
-  <div>
-    <input type="checkbox" id="item2" name="item2" value="item2">
-    <label for="item2">아이템 2</label>
-    <input type="text" id="quantity2" name="quantity2" value="1">
-    <button type="button" id="delete2">삭제</button>
+</c:if>
+<br>
+<c:if test="${!empty cart}">
+  <div class="total-price-container">
+    <p>총 구매 금액:
+    <span id="totalPrice">0</span>
+      원</p>
   </div>
+  </c:if>
+<div class="container">
   <div>
-    <input type="checkbox" id="item3" name="item3" value="item3">
-    <label for="item3">아이템 3</label>
-    <input type="text" id="quantity3" name="quantity3" value="1">
-    <button type="button" id="delete3">삭제</button>
+    <button onclick="deleteItems()">삭제</button>
+    <button onclick="calculateTotal()">구매</button>
   </div>
-  <div>
-    <input type="checkbox" id="item4" name="item4" value="item4">
-    <label for="item4">아이템 4</label>
-    <input type="text" id="quantity4" name="quantity4" value="1">
-    <button type="button" id="delete4">삭제</button>
-  </div>
-  </form>
 </div>
 
+
+
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function (){
+    $(".selectedItems").on("change", function (){
+      calculateTotalPrice();
+    })
+  })
+  function calculateTotalPrice() {
+    let totalPrice = 0;
+
+    // 체크된 체크박스들의 가격 합산
+    $(".selectedItems:checked").each(function() {
+      const price = $(this).closest("tr").find(".total").data("price");
+      console.log(price);
+      totalPrice += price;
+    });
+
+    // 총 구매 금액 업데이트
+    $("#totalPrice").text(totalPrice);
+  }
+</script>
 <%@ include file="../footer/footer.jsp"%>
 </html>
